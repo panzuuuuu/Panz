@@ -1,0 +1,58 @@
+import junit.framework.TestCase;
+
+import com.scb.ss.accountopening.Mapper.SSAccountOpeningMapper;
+import com.scb.nfs.ibank.accountopening.domain.AccountOpeningProduct;
+import com.scb.nfs.ibank.accountopening.vo.PrdMapAccopenVO;
+
+public class SSAccountOpeningMapperTest extends TestCase {
+
+    private SSAccountOpeningMapper mapper;
+
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        mapper = SSAccountOpeningMapper.INSTANCE;
+    }
+
+    public void testAccountOpeningProductToPrdMapAccopenVO() {
+        AccountOpeningProduct product = new AccountOpeningProduct();
+        product.setCountryCode("IN");
+        product.setProductCode("SAV");
+        product.setDescriptionEnglish("Savings");
+        product.setMinAmt(1000);
+        product.setMaxAmt(50000);
+        product.setAllowOpening("Y");
+
+        PrdMapAccopenVO result =
+                mapper.accountOpeningProductToPrdMapAccopenVO(product);
+
+        assertNotNull(result);
+        assertEquals("IN", result.getCountrycode());
+        assertEquals("SAV", result.getProductcode());
+        assertEquals("Savings", result.getDescriptioneng());
+        assertEquals(1000, result.getMinamt());
+        assertEquals(50000, result.getMaxamt());
+        assertEquals("Y", result.getAllowopening());
+    }
+
+    public void testPrdMapAccopenVOToAccountOpeningProduct() {
+        PrdMapAccopenVO vo = new PrdMapAccopenVO();
+        vo.setCountrycode("IN");
+        vo.setProductcode("CUR");
+        vo.setDescriptioneng("Current");
+        vo.setMinamt(2000);
+        vo.setMaxamt(100000);
+        vo.setAllowopening("N");
+
+        AccountOpeningProduct result =
+                mapper.prdMapAccopenVOToAccountOpeningProduct(vo);
+
+        assertNotNull(result);
+        assertEquals("IN", result.getCountryCode());
+        assertEquals("CUR", result.getProductCode());
+        assertEquals("Current", result.getDescriptionEnglish());
+        assertEquals(2000, result.getMinAmt());
+        assertEquals(100000, result.getMaxAmt());
+        assertEquals("N", result.getAllowOpening());
+    }
+}
